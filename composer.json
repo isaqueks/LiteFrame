@@ -1,0 +1,18 @@
+{
+    "name": "ksdev/lite-frame",
+    "description": "PHP simple and lightweight framework",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "LiteFrame\\": "./LiteFrame"
+        }
+    },
+    "authors": [
+        {
+            "name": "Isaque",
+            "email": "iskschluter@gmail.com"
+        }
+    ],
+    "require": {}
+}
