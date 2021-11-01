@@ -2,23 +2,24 @@
 
 namespace LiteFrame\Http;
 
+use LiteFrame\Core\URL;
 use LiteFrame\Http\Body\ReadableBody;
 use TypeError;
 
 class Request extends Message {
 
-    protected string $url;
+    protected URL $url;
     protected string $method;
 
     function __construct(
         string $url, 
         string $method, 
         string $requestBody, 
-        array|string $cookies = null, 
+        array|string|null $cookies = null, 
         array $headers = []
     ) {
-        $this->url = $url;
-        $this->method = $method;
+        $this->url = new URL($url);
+        $this->method = strtoupper($method);
         $this->body = new ReadableBody($requestBody);
         $this->setAllHeaders($headers);
         
@@ -40,8 +41,12 @@ class Request extends Message {
         }
     }
 
-    public function url(): string {
+    public function url(): URL {
         return $this->url;
+    }
+
+    public function href(): string {
+        return $this->url()->href();
     }
 
     public function method(): string {

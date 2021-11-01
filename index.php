@@ -1,10 +1,10 @@
 <?php
 
-use LiteFrame\Http\Request;
+use LiteFrame\Core\Server;
 
 require 'vendor/autoload.php';
 
-$req = Request::current();
+$req = Server::currentRequest();
 
 ?>
 <!DOCTYPE html>
@@ -18,7 +18,7 @@ $req = Request::current();
 <body>
     
     <p>
-        HTTP: <b><?= $req->method(); ?></b>&nbsp;<code><?= $req->url(); ?></code>
+        HTTP: <b><?= $req->method(); ?></b>&nbsp;<code><?= $req->url()->href(); ?></code>
     </p>
 
     <hr>

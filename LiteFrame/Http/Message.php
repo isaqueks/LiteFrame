@@ -3,21 +3,32 @@
 namespace LiteFrame\Http;
 
 use LiteFrame\Exceptions\FormatException;
+use LiteFrame\Exceptions\ReadOnlyException;
 use LiteFrame\Http\Body\Body;
 
 abstract class Message {
     protected array $headers;
     protected array $cookies;
     protected Body $body;
+    protected bool $headersLocked = false;
+
+
+    protected function throwHeadersReadOnlyIfNeeded() {
+        if ($this->headersLocked === true) {
+            throw new ReadOnlyException("Headers are read-only.");
+        }
+    }
+
 
     protected function setAllHeaders(array $headers) {
         $this->headers = [];
         foreach ($headers as $name => $value) {
-            $this->headers[strtoupper($name)] = $value;
+            $this->setHeader($name, $value);
         }
     }
     
     public function setHeader(string $name, string $content) {
+        $this->throwHeadersReadOnlyIfNeeded();
         $this->headers[strtoupper($name)] = $content;
     }
 
@@ -50,6 +61,7 @@ abstract class Message {
     }
 
     public function setAllCookies(array $cookies): void {
+        $this->throwHeadersReadOnlyIfNeeded();
         $this->cookies = $cookies;
     }
 
@@ -58,6 +70,7 @@ abstract class Message {
     }
 
     public function setCookie(string $name, string $value): void {
+        $this->throwHeadersReadOnlyIfNeeded();
         $this->cookies[$name] = $value;
     }
 
@@ -70,6 +83,10 @@ abstract class Message {
         return $this->body;
     }
 
+
+    public function lockHeaders() {
+        $this->headersLocked = true;
+    }
 
 }
 
