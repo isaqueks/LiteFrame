@@ -21,8 +21,15 @@ class CookieManager {
         return $this->cookies[$name] ?? null;
     }
 
-    public function toHeaderString(): string {
-        throw new Exception("Not implemented");
+    public function toHeadersString(): array {
+        $arr = [];
+
+        foreach ($this->cookies as $name => $value) {
+            $str = urlencode($name)."=".urlencode($value);
+            array_push($arr, $str);
+        }
+
+        return $arr;
     }
 
     public function getAll(): array {

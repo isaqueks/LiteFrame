@@ -26,7 +26,7 @@ test('Request', function () {
     $req->setHeader("Test-Header", "This is a test.");
     expect($req->header("test-header"))->toEqual("This is a test.");
 
-    $req->lockHeaders();
+    $req->lockHead();
 
     expect(function() use($req) {
         $req->setHeader("Read-Only", "true");
