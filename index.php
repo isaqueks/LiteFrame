@@ -49,5 +49,18 @@ $req = Server::currentRequest();
         <?= $req->body()->readJSON()["user"]["age"]; ?> 
     </code>
 
+    <hr>
+
+    <p>
+        Path: <code><?= $req->url()->path(); ?></code>
+    </p>
+
+    <p>
+        QueryString: <code><?= $req->url()->queryString(); ?></code>
+    </p>
+    <p>
+        Test: <?= $req->url()->queryParam("test"); ?>
+    </p>
+
 </body>
 </html>

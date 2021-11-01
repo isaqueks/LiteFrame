@@ -14,7 +14,7 @@ class ReadableBody extends Body {
         $this->content = $rawContent;
     }
 
-    private function throwReadOnly(string $msg = "Cannot write to read-only body!") {
+    private function throwReadOnly(string $msg = "Cannot write to closed body!") {
         throw new ReadOnlyException($msg, 1);
     }
 
