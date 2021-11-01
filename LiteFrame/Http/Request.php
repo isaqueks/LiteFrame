@@ -15,7 +15,6 @@ class Request extends Message {
         string $url, 
         string $method, 
         string $requestBody, 
-        array|string|null $cookies = null, 
         array $headers = []
     ) {
         $this->url = new URL($url);
@@ -23,21 +22,12 @@ class Request extends Message {
         $this->body = new ReadableBody($requestBody);
         $this->setAllHeaders($headers);
         
-        $cookiesType = gettype($cookies);
-        if ($cookiesType === "string") {
-            $this->cookies = CookieManager::parseHeader($cookies);
-        }
-        else if ($cookiesType === "array") {
-            $this->cookies = new CookieManager($cookies);
-        }
-        else if ($cookiesType === "NULL") {
-            $newCookies = $this->header("cookie");
-            if ($newCookies) {
-                $this->cookies = CookieManager::parseHeader($newCookies);
-            }
+        $rawCookies = $this->header("cookie");
+        if ($rawCookies) {
+            $this->cookies = CookieManager::parseHeader($rawCookies);
         }
         else {
-            throw new TypeError("Cookies should be a string, array or null!");
+            $this->cookies = new CookieManager();
         }
     }
 

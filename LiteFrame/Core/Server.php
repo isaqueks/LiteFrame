@@ -15,7 +15,7 @@ class Server {
             $url = $_SERVER["REQUEST_URI"];
             $method = $_SERVER["REQUEST_METHOD"];
             $body = file_get_contents("php://input") ?? "";
-            Server::$currRequest = new Request($url, $method, $body, null, $headers);
+            Server::$currRequest = new Request($url, $method, $body, $headers);
         }
 
         return Server::$currRequest;
