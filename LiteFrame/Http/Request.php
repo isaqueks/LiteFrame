@@ -3,6 +3,7 @@
 namespace LiteFrame\Http;
 
 use LiteFrame\Core\URL;
+use LiteFrame\Http\Body\Body;
 use LiteFrame\Http\Body\ReadableBody;
 use TypeError;
 
@@ -14,12 +15,29 @@ class Request extends Message {
     function __construct(
         string $url, 
         string $method, 
-        string $requestBody, 
+        string|Body $requestBody, 
         array $headers = []
     ) {
         $this->url = new URL($url);
         $this->method = strtoupper($method);
-        $this->body = new ReadableBody($requestBody);
+        
+
+        $bodyType = gettype($requestBody);
+
+        if (
+            $bodyType === "object" && 
+            ($requestBody::class === Body::class ||
+            is_subclass_of($requestBody, Body::class))
+        ) {
+            $this->body = $requestBody;
+        }
+        else if ($bodyType === "string") {
+            $this->body = new ReadableBody($requestBody);
+        }
+        else {
+            throw new TypeError("requestBody should be a Body instance or string!");
+        }
+
         $this->setAllHeaders($headers);
         
         $rawCookies = $this->header("cookie");
