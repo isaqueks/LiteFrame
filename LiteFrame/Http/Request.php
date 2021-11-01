@@ -48,15 +48,6 @@ class Request extends Message {
         return $this->method;
     }
 
-    static function current(): Request {
-        $headers = getallheaders() ?? [];
-        $url = $_SERVER["REQUEST_URI"];
-        $method = $_SERVER["REQUEST_METHOD"];
-        $body = file_get_contents("php://input") ?? "";
-
-        return new Request($url, $method, $body, null, $headers);
-    }
-
 }
 
 ?>

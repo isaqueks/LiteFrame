@@ -2,7 +2,6 @@
 
 namespace LiteFrame\Http;
 
-use Exception;
 use LiteFrame\Exceptions\FormatException;
 use LiteFrame\Http\Body\Body;
 

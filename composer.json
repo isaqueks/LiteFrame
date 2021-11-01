@@ -14,5 +14,10 @@
             "email": "iskschluter@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "pestphp/pest": "^1.20"
+    },
+    "scripts": {
+        "test": "./vendor/bin/pest"
+    }
 }
