@@ -25,15 +25,15 @@ class Request extends Message {
         
         $cookiesType = gettype($cookies);
         if ($cookiesType === "string") {
-            $this->parseAllCookies($cookies);
+            $this->cookies = CookieManager::parseHeader($cookies);
         }
         else if ($cookiesType === "array") {
-            $this->setAllCookies($cookies);
+            $this->cookies = new CookieManager($cookies);
         }
         else if ($cookiesType === "NULL") {
             $newCookies = $this->header("cookie");
             if ($newCookies) {
-                $this->parseAllCookies($newCookies);
+                $this->cookies = CookieManager::parseHeader($newCookies);
             }
         }
         else {

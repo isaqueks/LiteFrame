@@ -8,7 +8,7 @@ use LiteFrame\Http\Body\Body;
 
 abstract class Message {
     protected array $headers;
-    protected array $cookies;
+    protected CookieManager $cookies;
     protected Body $body;
     protected bool $headersLocked = false;
 
@@ -41,42 +41,17 @@ abstract class Message {
         return $copy;
     }
 
-
-    public function parseAllCookies(string $cookies): void {
-        $arr = [];
-        $cookiesSplit = explode(";", $cookies);
-
-        foreach ($cookiesSplit as $value) {
-            $parsed = [];
-            if (mb_parse_str($value, $parsed) === false) {
-                throw new FormatException("Unable to parse cookies! Got '$cookies' ($value).");
-            }
-            foreach ($parsed as $cookieName => $cookieValue) {
-                $arr[$cookieName] = $cookieValue;
-            }
-        }
-
-        $this->setAllCookies($arr);
-
-    }
-
-    public function setAllCookies(array $cookies): void {
-        $this->throwHeadersReadOnlyIfNeeded();
-        $this->cookies = $cookies;
-    }
-
-    public function cookie(string $name): string|false {
-        return $this->cookies[$name] ?? false;
+    public function cookie(string $name): string|null {
+        return $this->cookies->get($name);
     }
 
     public function setCookie(string $name, string $value): void {
         $this->throwHeadersReadOnlyIfNeeded();
-        $this->cookies[$name] = $value;
+        $this->cookies->set($name, $value);
     }
 
     public function getAllCookies(): array {
-        $copy = $this->cookies;
-        return $copy;
+        return $this->cookies->getAll();
     }
 
     public function body(): Body {
