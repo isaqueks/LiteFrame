@@ -4,8 +4,8 @@ namespace LiteFrame\Http;
 
 class Cookie {
 
-    public string $name;
-    public string $value;
+    private string $name;
+    protected string $value;
 
     protected array $attributes;
 
@@ -15,7 +15,24 @@ class Cookie {
         $this->attributes = $attrs;
     }
 
-    public function setAttribute(string $attr, string $val) {
+    public function name(): string {
+        return $this->name;
+    }
+
+    public function value(): string {
+        return $this->value;
+    }
+
+    public function setValue(string $value): void {
+        $this->value = $value;
+    }
+
+
+    public function setAllAttributes(array $attrs): void {
+        $this->attributes = $attrs;
+    }
+
+    public function setAttribute(string $attr, string|null $val = null) {
         $this->attributes[$attr] = $val;
     }
 
@@ -25,6 +42,24 @@ class Cookie {
 
     public function getAllAttributes(): array {
         return $this->attributes;
+    }
+
+    public function toHeaderString(): string {
+        $str =  urlencode($this->name)."=".urlencode($this->value);
+
+        $attrs = $this->getAllAttributes();
+        if (sizeof($attrs) > 0) {
+            $str .= ";";
+            foreach ($attrs as $name => $value) {
+                $str .= " ".urlencode($name);
+                if (isset($value) && !empty($value)) {
+                    $str .= "=".urlencode($value);
+                }
+                $str .= ";";
+            }
+        }
+
+        return $str;
     }
 
 }

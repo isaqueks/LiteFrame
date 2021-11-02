@@ -43,6 +43,8 @@ test('HeaderManager', function () {
 
     var_dump($all);
 
+    // when set is called within replace = false,
+    // the old is removed and a new is pushed to the array
     expect($all[1]->name())->toEqual("USER-AGENT");
     expect($all[0]->name())->toEqual("X-FORWARDED-FOR");
 

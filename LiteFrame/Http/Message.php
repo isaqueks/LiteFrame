@@ -20,12 +20,8 @@ abstract class Message {
         }
     }
 
-
     protected function setAllHeaders(array $headers) {
         $this->headers = new HeaderManager($headers);
-        // foreach ($headers as $name => $value) {
-        //     $this->setHeader($name, $value);
-        // }
     }
     
     public function setHeader(string $name, string $content, bool $replace_UNSAFE = true) {
@@ -54,12 +50,16 @@ abstract class Message {
     }
 
     public function cookie(string $name): string|null {
+        return $this->cookies->getCookieValue($name);
+    }
+
+    public function cookieObject(string $name): Cookie|null {
         return $this->cookies->get($name);
     }
 
-    public function setCookie(string $name, string $value, bool $autoCommit = true): void {
+    public function setCookie(string $name, string $value, array $attrs = [], bool $autoCommit = true): void {
         $this->throwHeadReadOnlyIfNeeded();
-        $this->cookies->set($name, $value);
+        $this->cookies->set($name, $value, $attrs);
         if ($autoCommit) {
             $this->commitCookies();
         }

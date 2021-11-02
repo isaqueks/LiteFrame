@@ -46,7 +46,10 @@ $req = Server::currentRequest();
     </h3>
 
     <code>
-        <?= $req->body()->readJSON()["user"]["age"]; ?> 
+        <?php try {
+            echo $req->body()->readJSON()["user"]["age"];
+        } catch (\LiteFrame\Exceptions\FormatException $e) {
+        } ?>
     </code>
 
     <hr>
