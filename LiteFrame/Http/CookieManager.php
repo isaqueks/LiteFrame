@@ -54,7 +54,11 @@ class CookieManager {
     }
 
     public function getCookieValue($name): string|null {
-        return $this->cookies[$name]?->value() ?? null;
+        $cook = $this->cookies[$name] ?? null;
+        if (!$cook) {
+            return null;
+        }
+        return $cook->value();
     }
 
     public function toHeadersString(): array {
@@ -71,7 +75,7 @@ class CookieManager {
     /**
      * @return Cookie[]
      */
-    public function getAll(): array {
+    public function allCookies(): array {
         return $this->cookies;
     }
 

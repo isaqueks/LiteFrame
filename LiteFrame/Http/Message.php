@@ -66,7 +66,7 @@ abstract class Message {
     }
 
     public function getAllCookies(): array {
-        return $this->cookies->getAll();
+        return $this->cookies->allCookies();
     }
 
 

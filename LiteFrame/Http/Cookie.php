@@ -44,6 +44,14 @@ class Cookie {
         return $this->attributes;
     }
 
+    public function removeAttribute(string $attr): void {
+        unset($this->attributes[$attr]);
+    }
+
+    public function hasAttribute(string $attr): bool {
+        return array_key_exists($attr, $this->attributes);
+    }
+
     public function toHeaderString(): string {
         $str =  urlencode($this->name)."=".urlencode($this->value);
 
