@@ -28,7 +28,7 @@ class HeaderManager {
     public function get(string $name): string|null {
         foreach ($this->rawArray as $header) {
             if ($header->is($name)) {
-                return $header->value;
+                return $header->value();
             }
         }
         return null;
@@ -55,7 +55,7 @@ class HeaderManager {
         $result = [];
         foreach ($this->rawArray as $header) {
             if ($header->is($name)) {
-                return new Header($header->name(), $header->value);
+                return new Header($header->name(), $header->value());
             }
         }
         return $result;
@@ -63,7 +63,7 @@ class HeaderManager {
 
 
     /**
-     * @return Header[]
+     * @return Header[string]
      */
     public function getAllRaw(): array {
         return $this->rawArray;

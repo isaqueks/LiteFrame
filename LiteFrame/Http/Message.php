@@ -32,19 +32,28 @@ abstract class Message {
         return $this->headers->get($name) ?? null;
     }
 
+    /**
+     * @return Header[]
+     */
+    public function manyHeaders(string $name): array {
+        return $this->headers->getAllMatching($name);
+    }
+
 
     /**
      * @return Header[]
      */
-    public function getAllHeaders(): array {
+    public function allHeaders(): array {
         return $this->headers->getAllRaw();
     }
 
 
     public function commitCookies(): void {
         $headers = $this->cookies->toHeadersString();
+        $count = 0;
         foreach ($headers as $content) {
-            $this->setHeader("Set-Cookie", $content, false);
+            $this->setHeader("Set-Cookie", $content, ($count == 0) ? true : false);
+            $count++;
         }
     }
 
@@ -64,7 +73,7 @@ abstract class Message {
         }
     }
 
-    public function getAllCookies(): array {
+    public function allCookies(): array {
         return $this->cookies->allCookies();
     }
 

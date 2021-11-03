@@ -42,7 +42,7 @@ class Request extends Message {
         
         $rawCookies = $this->header("cookie");
         if ($rawCookies) {
-            $this->cookies = CookieManager::parseHeader($rawCookies);
+            $this->cookies = CookieManager::parseCookieHeader($rawCookies);
         }
         else {
             $this->cookies = new CookieManager();

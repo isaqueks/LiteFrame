@@ -79,8 +79,36 @@ class CookieManager {
         return $this->cookies;
     }
 
+    /**
+     * @param Header[] $headers
+     */
+    public static function parseSetCookieHeader(array $headers): CookieManager {
+        $cookies = new CookieManager();
+        $headers = array_values($headers);
 
-    public static function parseHeader(string $content): CookieManager {
+        foreach ($headers as $header) {
+            if ($header->is("Set-Cookie")) {
+                $content = $header->value();
+                $cookieRawSplit = explode(";", $content);
+
+                if (sizeof($cookieRawSplit) < 1) {
+                    continue;
+                }
+                $cookieRaw = $cookieRawSplit[0];
+                $nameValueSplit = explode("=", $cookieRaw);
+                if (sizeof($nameValueSplit) !== 2) {
+                    continue;
+                }
+                [$name, $value] = $nameValueSplit;
+                $cookies->set($name, $value);
+                // TODO: Parse attributes
+            }
+        }
+
+        return $cookies;
+    } 
+
+    public static function parseCookieHeader(string $content): CookieManager {
         $cookies = new CookieManager();
         $cookiesSplit = explode(";", $content);
 

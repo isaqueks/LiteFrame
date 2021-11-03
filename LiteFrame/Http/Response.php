@@ -25,19 +25,25 @@ class Response extends Message {
             throw new TypeError("setHeaderFn must be a callable function!");
         }
         if (!is_callable($setStatusFn)) {
-            $this->setStatusFn = $setStatusFn;
+            throw new TypeError("setStatusFn must be a callable function!");
         }
+
+        $this->setHeaderFn = $setHeaderFn;
+        $this->setStatusFn = $setStatusFn;
         
         $this->body = $responseBody;        
         $this->setAllHeaders($headers);
+        $this->cookies = CookieManager::parseSetCookieHeader($this->headers->getAllRaw());
         
-        $rawCookies = $this->header("cookie");
-        if ($rawCookies) {
-            $this->cookies = CookieManager::parseHeader($rawCookies);
-        }
-        else {
-            $this->cookies = new CookieManager();
-        }
+
+
+        // $rawCookies = $this->header("cookie");
+        // if ($rawCookies) {
+        //     $this->cookies = CookieManager::parseHeader($rawCookies);
+        // }
+        // else {
+        //     $this->cookies = new CookieManager();
+        // }
     }
 
     public function sendHeaders(bool $commitCookies = true): void {
@@ -49,13 +55,15 @@ class Response extends Message {
 
         call_user_func($this->setStatusFn, $this->statusCode());
 
-        foreach ($this->cookies as $cookieName => $cookieValue) {
-            call_user_func($this->setHeaderFn, $cookieName, $cookieValue);
+        $headers = $this->headers->getAllRaw();
+
+        foreach ($headers as $header) {
+            call_user_func($this->setHeaderFn, $header->name(), $header->value());
         }
 
     }
 
-    protected function end(): void {
+    public function end(): void {
         $this->sendHeaders(true);
         $this->body()->end();
     }
