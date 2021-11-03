@@ -81,6 +81,7 @@ test("Response", function() {
     $res->end();
     expect($statusCode)->toEqual(404);
     expect($buffer)->toEqual(json_encode($resJSON));
+    expect($res->body()->read())->toEqual($buffer);
     expect($ended)->toBeTrue();
 
     expect($head)->toEqual(

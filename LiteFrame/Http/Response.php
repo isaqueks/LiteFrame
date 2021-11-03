@@ -34,16 +34,7 @@ class Response extends Message {
         $this->body = $responseBody;        
         $this->setAllHeaders($headers);
         $this->cookies = CookieManager::parseSetCookieHeader($this->headers->getAllRaw());
-        
 
-
-        // $rawCookies = $this->header("cookie");
-        // if ($rawCookies) {
-        //     $this->cookies = CookieManager::parseHeader($rawCookies);
-        // }
-        // else {
-        //     $this->cookies = new CookieManager();
-        // }
     }
 
     public function sendHeaders(bool $commitCookies = true): void {
