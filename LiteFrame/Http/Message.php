@@ -11,7 +11,6 @@ abstract class Message {
     protected CookieManager $cookies;
     protected Body $body;
     protected bool $headLocked = false;
-    protected int $statusCode;
 
 
     protected function throwHeadReadOnlyIfNeeded() {
@@ -67,16 +66,6 @@ abstract class Message {
 
     public function getAllCookies(): array {
         return $this->cookies->allCookies();
-    }
-
-
-    public function statusCode(): int {
-        return $this->statusCode;
-    }
-
-    public function setStatusCode(int $code): void {
-        $this->throwHeadReadOnlyIfNeeded();
-        $this->statusCode = $code;
     }
 
 

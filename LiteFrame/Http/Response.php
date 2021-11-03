@@ -12,6 +12,7 @@ class Response extends Message {
 
     protected $setHeaderFn;
     protected $setStatusFn;
+    protected int $statusCode = 200;
 
     function __construct(
         WritableBody $responseBody,
@@ -61,6 +62,17 @@ class Response extends Message {
         }
         $this->body()->end();
     }
+
+
+    public function statusCode(): int {
+        return $this->statusCode;
+    }
+
+    public function setStatusCode(int $code): void {
+        $this->throwHeadReadOnlyIfNeeded();
+        $this->statusCode = $code;
+    }
+
 
 }
 
