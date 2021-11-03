@@ -57,9 +57,6 @@ class Response extends Message {
 
     protected function end(): void {
         $this->sendHeaders(true);
-        foreach ($this->cookies as $cookieName => $cookieValue) {
-            call_user_func($this->setHeaderFn, $cookieName, $cookieValue);
-        }
         $this->body()->end();
     }
 
