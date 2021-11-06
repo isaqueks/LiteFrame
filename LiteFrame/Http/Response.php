@@ -69,6 +69,14 @@ class Response extends Message {
         $this->statusCode = $code;
     }
 
+    public function view(string $path, array $params = []): void {
+        extract($params);
+        ob_start();
+        require $path;
+        $content = ob_get_clean();
+        $this->body()->write($content);
+    }
+
 
 }
 

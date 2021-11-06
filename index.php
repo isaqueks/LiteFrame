@@ -5,65 +5,11 @@ use LiteFrame\Core\Server;
 require 'vendor/autoload.php';
 
 $req = Server::currentRequest();
+$res = Server::currentResponse();
+
+$res->view("view.php", [
+    "name" => $req->url()->queryParam("name")
+]);
+$res->end();
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request echo</title>
-</head>
-<body>
-    
-    <p>
-        HTTP: <b><?= $req->method(); ?></b>&nbsp;<code><?= $req->url()->href(); ?></code>
-    </p>
-
-    <hr>
-
-    <h3>
-        User-Agent:
-    </h3>
-    <code>
-        <?= $req->header("User-Agent"); ?>
-    </code>
-
-    <hr>
-
-    <h3>
-        Cookies:
-    </h3>
-    <code>
-        <?= $req->cookie("Test"); ?>
-    </code>
-
-    <hr>
-
-    <h3>
-        Body:
-    </h3>
-
-    <code>
-        <?php try {
-            echo $req->body()->readJSON()["user"]["age"];
-        } catch (\LiteFrame\Exceptions\FormatException $e) {
-        } ?>
-    </code>
-
-    <hr>
-
-    <p>
-        Path: <code><?= $req->url()->path(); ?></code>
-    </p>
-
-    <p>
-        QueryString: <code><?= $req->url()->queryString(); ?></code>
-    </p>
-    <p>
-        Test: <?= $req->url()->queryParam("test"); ?>
-    </p>
-
-</body>
-</html>
