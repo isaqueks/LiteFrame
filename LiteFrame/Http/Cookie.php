@@ -61,7 +61,7 @@ class Cookie {
             foreach ($attrs as $name => $value) {
                 $str .= " ".urlencode($name);
                 if (isset($value) && !empty($value)) {
-                    $str .= "=".urlencode($value);
+                    $str .= "=".$value;
                 }
                 $str .= ";";
             }
